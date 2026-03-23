@@ -1,10 +1,13 @@
 package cz.uhk.graphed.model;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EquilateralTriangle extends AbstractGraphicObject{
     private int edgeLenght;
     private boolean isUpwards;
+    private Point[] vertices = new Point[3];
 
     public EquilateralTriangle(Point pos, int edgeLenght, Color color, boolean isUpwards) {
         super(pos, color);
@@ -21,29 +24,44 @@ public class EquilateralTriangle extends AbstractGraphicObject{
     @Override
     public void draw(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        int[] xPoints = new int[3];
-        int[] yPoints = new int[3];
         //A
-        xPoints[0] =  position.x;
-        yPoints[0] =  position.y;
+        vertices[0] = new Point(position.x, position.y);
         //B
-        xPoints[1] =  position.x + edgeLenght;
-        yPoints[1] =  position.y;
+        vertices[1] = new Point(position.x + edgeLenght, position.y);
         //C
-        xPoints[2] = edgeLenght / 2 + position.x;
-        double triangleHeight = (int)((Math.sqrt(3)/2) * edgeLenght);
+        int triangleHeight = (int)((Math.sqrt(3)/2) * edgeLenght);
         if(isUpwards){
-            yPoints[2] = (int)(position.y - triangleHeight);
+            vertices[2] = new Point(edgeLenght / 2 + position.x, position.y - triangleHeight);
         }
         else{
-            yPoints[2] = (int)(position.y + triangleHeight);
+            vertices[2] = new Point(edgeLenght / 2 + position.x, position.y + triangleHeight);
         }
 
+        int[] xPoints = new int[3];
+        int[] yPoints = new int[3];
+        for(int i = 0; i < 3; i++){
+            xPoints[i] = vertices[i].x;
+            yPoints[i] = vertices[i].y;
+        }
         g2.drawPolygon(xPoints, yPoints, 3);
     }
 
     @Override
     public boolean contains(Point p) {
+        double S = area(vertices[0], vertices[1], vertices[2]);
+
+        double s1 = area(p, vertices[1], vertices[2]);
+        double s2 = area(vertices[0], p, vertices[2]);
+        double s3 = area(vertices[0], vertices[1], p);
+
+        double dif = Math.abs(S - s1 - s2 - s3);
+        if(dif < 0.01) return true;
+
         return false;
+    }
+
+    public double area(Point A, Point B, Point C) {
+        //S = 1/2|x1(y2-y3) + x2(y1-y3) + x3(y1 - y2)|
+        return 0.5 * Math.abs(A.x * (B.y - C.y) + B.x * (C.y - A.y) +  C.x * (A.y - B.y));
     }
 }

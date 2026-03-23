@@ -32,6 +32,29 @@ public class Oval extends AbstractGraphicObject{
 
     @Override
     public boolean contains(Point p) {
+        //Rovnice (x-m)^2/a^2 + (y-n)^2/b^2=1, kde [m,n] je střed, a polovina šířky a b polovina výšky
+
+        int x = position.x;
+        int y = position.y;
+
+        int m = x + width / 2;
+        int n = y + height / 2;
+
+        double a = width / 2.0;
+        double b = height / 2.0;
+
+        //Elipsa, kterou hledám
+        double target = (Math.pow(x-m, 2))/Math.pow(a, 2) + (Math.pow(y-n, 2))/Math.pow(b, 2);
+
+        int mouseX = p.x;
+        int mouseY = p.y;
+
+        //Elipsa, která obsahuje myš
+        double mouse = (Math.pow(mouseX - m, 2))/Math.pow(a, 2) + (Math.pow(mouseY - n, 2))/Math.pow(b, 2);
+
+        //Pokud je elipsa myši menší číslo, elipsa obsahuje myš
+        if(target > mouse) return true;
+
         return false;
     }
 }

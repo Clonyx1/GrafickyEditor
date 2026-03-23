@@ -2,9 +2,10 @@ package cz.uhk.graphed.model;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class Group extends AbstractGraphicObject {
+public class Group extends AbstractGraphicObject implements Iterable<AbstractGraphicObject> {
     List<AbstractGraphicObject> objects = new ArrayList<>();
 
     public Group(){}
@@ -31,6 +32,14 @@ public class Group extends AbstractGraphicObject {
 
     @Override
     public boolean contains(Point p) {
+        for(var o : objects){
+            if(o.contains(p)) return true;
+        }
         return false;
+    }
+
+    @Override
+    public Iterator<AbstractGraphicObject> iterator() {
+        return objects.iterator();
     }
 }

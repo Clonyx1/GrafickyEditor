@@ -65,8 +65,7 @@ public class EditorFrame extends JFrame {
                 else if("MOVE".equals(currentTool)) {
                     Point mousePos = e.getPoint();
 
-                    Group canvasGroup = canvas.getGraphicObjects();
-                    List<AbstractGraphicObject> canvasObjects = canvasGroup.getObjects();
+                    Group canvasObjects = canvas.getGraphicObjects();
 
                     for(AbstractGraphicObject object: canvasObjects){
                         if(object.contains(mousePos)){
