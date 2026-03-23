@@ -1,6 +1,9 @@
 package cz.uhk.graphed.model;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Rectangle extends AbstractGraphicObject {
     private int width;
@@ -42,7 +45,20 @@ public class Rectangle extends AbstractGraphicObject {
     }
 
     @Override
-    public boolean contains(Point p) {
+    public boolean contains(Point p)
+    {
+        List<Point> containedPoints = new ArrayList<>();
+
+        for(int x = position.x; x < position.x + width; x++){
+            for(int y = position.y; y < position.y + height; y++){
+                containedPoints.add(new Point(x, y));
+            }
+        }
+
+        if(containedPoints.contains(p)){
+            return true;
+        }
+
         return false;
     }
 }

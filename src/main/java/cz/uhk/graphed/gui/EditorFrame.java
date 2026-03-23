@@ -13,23 +13,27 @@ import java.util.List;
 public class EditorFrame extends JFrame {
     private Canvas canvas = new Canvas();
     private JToolBar toolBar = new JToolBar();
+
+    private List<Button> buttons = new ArrayList<>();
     private Button triangleBtn = new Button("Trojúhelník");
     private Button squareBtn = new Button("Čtverec");
     private Button rectBtn = new Button("Obdelník");
     private Button ovalBtn = new Button("Kruh");
+    private Button moveBtn = new Button("Přesunout objekt");
+
     String currentTool = "";
 
     public EditorFrame() {
         super("FIM Grafic Editor");
-
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-
+        //Add all buttons to buttons list
+        initButtons();
         initToolbar();
         addMouseEventListener();
 
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
         add(canvas, BorderLayout.CENTER);
         add(toolBar, BorderLayout.NORTH);
-        initSampleData();
 
         pack();
     }
@@ -58,23 +62,37 @@ public class EditorFrame extends JFrame {
 
                     canvas.add(oval);
                 }
+                else if("MOVE".equals(currentTool)) {
+                    Point mousePos = e.getPoint();
+
+                    Group canvasGroup = canvas.getGraphicObjects();
+                    List<AbstractGraphicObject> canvasObjects = canvasGroup.getObjects();
+
+                    for(AbstractGraphicObject object: canvasObjects){
+                        if(object.contains(mousePos)){
+                            IO.println("Obsahuje myš");
+                        }
+                    }
+
+                }
                 repaint();
             }
         });
     }
 
+    private void initButtons(){
+        buttons.add(triangleBtn);
+        buttons.add(squareBtn);
+        buttons.add(rectBtn);
+        buttons.add(ovalBtn);
+        buttons.add(moveBtn);
+    }
+
     private void initToolbar(){
-        toolBar.add(triangleBtn);
-        toolBar.addSeparator();
-
-        toolBar.add(squareBtn);
-        toolBar.addSeparator();
-
-        toolBar.add(rectBtn);
-        toolBar.addSeparator();
-
-        toolBar.add(ovalBtn);
-        toolBar.addSeparator();
+        buttons.forEach(button -> {
+            toolBar.add(button);
+            toolBar.addSeparator();
+        });
 
         createEventListeners();
     }
@@ -92,23 +110,14 @@ public class EditorFrame extends JFrame {
         squareBtn.addActionListener(e -> {
             currentTool = "SQUARE";
         });
-
+        moveBtn.addActionListener(e -> {
+            currentTool = "MOVE";
+        });
     }
 
     private void initSampleData() {
-        /*canvas.add(new Rectangle(new Point(50, 70), Color.black, 50, 50));
+        canvas.add(new Rectangle(new Point(50, 70), Color.black, 50, 50));
         canvas.add(new EquilateralTriangle(new Point(100, 100),50, Color.black, true));
-        canvas.add(new Oval(new Point(150, 200), Color.yellow, 25, 25));*/
-
-        Rectangle rect = new Rectangle(new Point(50, 70), Color.black, 50, 50);
-        EquilateralTriangle triangle = new EquilateralTriangle(new Point(100, 100),50, Color.black, true);
-
-        List<AbstractGraphicObject> objectList = new ArrayList<>();
-        objectList.add(triangle);
-        objectList.add(rect);
-
-        Group group = new Group(objectList);
-        List<AbstractGraphicObject> groupList = group.getObjects();
-        groupList.forEach(o -> { canvas.add(o); });
+        canvas.add(new Oval(new Point(150, 200), Color.yellow, 25, 25));
     }
 }

@@ -1,11 +1,13 @@
 package cz.uhk.graphed.model;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Group extends AbstractGraphicObject {
-    List<AbstractGraphicObject> objects;
+    List<AbstractGraphicObject> objects = new ArrayList<>();
 
+    public Group(){}
     public Group(List<AbstractGraphicObject> objects){
         this.objects = objects;
     }
@@ -15,6 +17,10 @@ public class Group extends AbstractGraphicObject {
         return objects;
     }
     public void setObjects(List<AbstractGraphicObject> objects) { this.objects = objects; }
+
+    public void add(AbstractGraphicObject object){
+        objects.add(object);
+    }
     @Override
     public void draw(Graphics g) {
         Graphics2D g2 =  (Graphics2D) g;
