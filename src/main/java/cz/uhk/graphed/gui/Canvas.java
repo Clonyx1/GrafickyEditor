@@ -3,6 +3,7 @@ package cz.uhk.graphed.gui;
 import cz.uhk.graphed.model.AbstractGraphicObject;
 
 import javax.swing.*;
+import javax.swing.plaf.ToolBarUI;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class Canvas extends JPanel {
     public void add(AbstractGraphicObject object){
         graphicObjects.add(object);
     }
+
 
     @Override
     public void paint(Graphics g) {

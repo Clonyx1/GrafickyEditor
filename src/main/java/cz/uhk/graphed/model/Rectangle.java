@@ -10,10 +10,10 @@ public class Rectangle extends AbstractGraphicObject {
     public Rectangle() {
     }
 
-    public Rectangle(Point pos, Color color, int a, int b) {
+    public Rectangle(Point pos, Color color, int width, int height) {
         super(pos, color);
-        this.width = a;
-        this.height = b;
+        this.width = width;
+        this.height = height;
     }
 
     //Get set
