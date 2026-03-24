@@ -21,6 +21,9 @@ public class EditorFrame extends JFrame {
     private Button ovalBtn = new Button("Kruh");
     private Button moveBtn = new Button("Přesunout objekt");
 
+    private AbstractGraphicObject selectedObject = null;
+    private Point lastMousePos = null;
+
     String currentTool = "";
 
     public EditorFrame() {
@@ -29,6 +32,7 @@ public class EditorFrame extends JFrame {
         initButtons();
         initToolbar();
         addMouseEventListener();
+        addMouseMotionListener();
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -42,41 +46,64 @@ public class EditorFrame extends JFrame {
         canvas.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if ("TRIANGLE".equals(currentTool)) {
-                    EquilateralTriangle triangle = new EquilateralTriangle(e.getPoint(), 50, Color.black, true);
+                makeDecision(e);
+                lastMousePos = e.getPoint();
+                repaint();
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                selectedObject = null;
+            }
+        });
+    }
+    private void addMouseMotionListener(){
+        canvas.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if(selectedObject != null){
+                    int deltaX = e.getX() - lastMousePos.x;
+                    int deltaY = e.getY() - lastMousePos.y;
 
-                    canvas.add(triangle);
+                    selectedObject.setPosition(selectedObject.getPosition().x + deltaX, selectedObject.getPosition().y + deltaY);
                 }
-                else if("SQUARE".equals(currentTool)) {
-                    Rectangle square = new Rectangle(e.getPoint(), Color.black, 50, 50);
-
-                    canvas.add(square);
-                }
-                else if("RECTANGLE".equals(currentTool)) {
-                    Rectangle rectangle = new Rectangle(e.getPoint(), Color.black, 100, 50);
-
-                    canvas.add(rectangle);
-                }
-                else if("OVAL".equals(currentTool)) {
-                    Oval oval = new Oval(e.getPoint(), Color.black, 50, 50);
-
-                    canvas.add(oval);
-                }
-                else if("MOVE".equals(currentTool)) {
-                    Point mousePos = e.getPoint();
-
-                    Group canvasObjects = canvas.getGraphicObjects();
-
-                    for(AbstractGraphicObject object: canvasObjects){
-                        if(object.contains(mousePos)){
-                            IO.println("Obsahuje myš");
-                        }
-                    }
-
-                }
+                lastMousePos = e.getPoint();
                 repaint();
             }
         });
+    }
+    //Decides what to do when mouse is pressed
+    private void makeDecision(MouseEvent e){
+        if ("TRIANGLE".equals(currentTool)) {
+            EquilateralTriangle triangle = new EquilateralTriangle(e.getPoint(), 50, Color.black, true);
+
+            canvas.add(triangle);
+        }
+        else if("SQUARE".equals(currentTool)) {
+            Rectangle square = new Rectangle(e.getPoint(), Color.black, 50, 50);
+
+            canvas.add(square);
+        }
+        else if("RECTANGLE".equals(currentTool)) {
+            Rectangle rectangle = new Rectangle(e.getPoint(), Color.black, 100, 50);
+
+            canvas.add(rectangle);
+        }
+        else if("OVAL".equals(currentTool)) {
+            Oval oval = new Oval(e.getPoint(), Color.black, 50, 50);
+
+            canvas.add(oval);
+        }
+        else if("MOVE".equals(currentTool)) {
+            Point mousePos = e.getPoint();
+
+            Group canvasObjects = canvas.getGraphicObjects();
+
+            for(AbstractGraphicObject object: canvasObjects){
+                if(object.contains(mousePos)){
+                    selectedObject = object;
+                }
+            }
+        }
     }
 
     private void initButtons(){
