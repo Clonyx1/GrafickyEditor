@@ -28,6 +28,7 @@ public class EditorFrame extends JFrame {
 
     public EditorFrame() {
         super("FIM Grafic Editor");
+        initSampleData();
         //Add all buttons to buttons list
         initButtons();
         initToolbar();
@@ -64,7 +65,7 @@ public class EditorFrame extends JFrame {
                     int deltaX = e.getX() - lastMousePos.x;
                     int deltaY = e.getY() - lastMousePos.y;
 
-                    selectedObject.setPosition(selectedObject.getPosition().x + deltaX, selectedObject.getPosition().y + deltaY);
+                    selectedObject.move(deltaX, deltaY);
                 }
                 lastMousePos = e.getPoint();
                 repaint();
@@ -96,7 +97,7 @@ public class EditorFrame extends JFrame {
         else if("MOVE".equals(currentTool)) {
             Point mousePos = e.getPoint();
 
-            Group canvasObjects = canvas.getGraphicObjects();
+            var canvasObjects = canvas.getGraphicObjects();
 
             for(AbstractGraphicObject object: canvasObjects){
                 if(object.contains(mousePos)){
@@ -142,8 +143,18 @@ public class EditorFrame extends JFrame {
     }
 
     private void initSampleData() {
-        canvas.add(new Rectangle(new Point(50, 70), Color.black, 50, 50));
-        canvas.add(new EquilateralTriangle(new Point(100, 100),50, Color.black, true));
-        canvas.add(new Oval(new Point(150, 200), Color.yellow, 25, 25));
+        Group group = new Group();
+        group.add(new Rectangle(new Point(0, 0), Color.BLACK, 150, 150));
+        group.add(new Oval(new Point(50, 25), Color.BLACK, 50, 50));
+        group.add(new Oval(new Point(125, 25), Color.BLACK, 50, 50));
+
+        Group group2 = new Group();
+        group2.add(new Rectangle(new Point(100, 200), Color.BLACK, 100, 100));
+        group2.add(new Oval(new Point(100, 275), Color.BLACK, 20, 20));
+        group2.add(new Oval(new Point(125, 275), Color.BLACK, 20, 20));
+
+
+        canvas.add(group);
+        canvas.add(group2);
     }
 }

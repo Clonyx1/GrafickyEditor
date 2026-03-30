@@ -32,4 +32,7 @@ public abstract class AbstractGraphicObject {
     //Methods
     public abstract void draw(Graphics g);
     public abstract boolean contains(Point p);
+    public void move(int dx, int dy){
+        position.translate(dx, dy);
+    }
 }

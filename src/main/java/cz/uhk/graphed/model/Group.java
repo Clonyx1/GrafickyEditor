@@ -8,7 +8,9 @@ import java.util.List;
 public class Group extends AbstractGraphicObject implements Iterable<AbstractGraphicObject> {
     List<AbstractGraphicObject> objects = new ArrayList<>();
 
-    public Group(){}
+    public Group(){
+        position = new Point(0, 0);
+    }
     public Group(List<AbstractGraphicObject> objects){
         this.objects = objects;
     }
@@ -24,9 +26,8 @@ public class Group extends AbstractGraphicObject implements Iterable<AbstractGra
     }
     @Override
     public void draw(Graphics g) {
-        Graphics2D g2 =  (Graphics2D) g;
         for(AbstractGraphicObject object : objects){
-            object.draw(g2);
+            object.draw(g);
         }
     }
 
@@ -36,6 +37,13 @@ public class Group extends AbstractGraphicObject implements Iterable<AbstractGra
             if(o.contains(p)) return true;
         }
         return false;
+    }
+
+    @Override
+    public void move(int dx, int dy){
+        for(var o : objects){
+            o.move(dx, dy);
+        }
     }
 
     @Override

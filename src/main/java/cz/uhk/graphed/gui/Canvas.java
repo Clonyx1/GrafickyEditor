@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Canvas extends JPanel {
-    private Group graphicObjects = new Group();
+    private List<AbstractGraphicObject> graphicObjects = new ArrayList<>();
 
     public Canvas(){
         setPreferredSize(new Dimension(800, 600));
@@ -21,11 +21,13 @@ public class Canvas extends JPanel {
     }
 
     //Get set
-    public Group getGraphicObjects() {return graphicObjects;}
+    public List<AbstractGraphicObject> getGraphicObjects() {return graphicObjects;}
     @Override
     public void paint(Graphics g) {
         super.paint(g);
 
-        graphicObjects.draw(g);
+        for(var o : graphicObjects){
+            o.draw(g);
+        }
     }
 }
