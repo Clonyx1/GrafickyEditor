@@ -20,6 +20,11 @@ public class Group extends AbstractGraphicObject implements Iterable<AbstractGra
         return objects;
     }
     public void setObjects(List<AbstractGraphicObject> objects) { this.objects = objects; }
+    public void setColor(Color color) {
+        for(var o : objects){
+            o.setColor(color);
+        }
+    }
 
     public void add(AbstractGraphicObject object){
         objects.add(object);

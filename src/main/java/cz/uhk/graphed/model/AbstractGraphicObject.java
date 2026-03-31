@@ -29,6 +29,9 @@ public abstract class AbstractGraphicObject {
         this.position = new Point(x, y);
     }
 
+    public Color getColor(){return color;}
+    public void setColor(Color color){this.color = color;}
+
     //Methods
     public abstract void draw(Graphics g);
     public abstract boolean contains(Point p);

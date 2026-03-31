@@ -1,5 +1,6 @@
 package cz.uhk.graphed.gui;
 
+import cz.uhk.graphed.enums.Tool;
 import cz.uhk.graphed.model.*;
 import cz.uhk.graphed.model.Rectangle;
 
@@ -9,29 +10,19 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class EditorFrame extends JFrame {
     private Canvas canvas = new Canvas();
-    private JToolBar toolBar = new JToolBar();
+    private ToolBar toolBar = new ToolBar(canvas);
 
-    private List<Button> buttons = new ArrayList<>();
-    private Button triangleBtn = new Button("Trojúhelník");
-    private Button squareBtn = new Button("Čtverec");
-    private Button rectBtn = new Button("Obdelník");
-    private Button ovalBtn = new Button("Kruh");
-    private Button moveBtn = new Button("Přesunout objekt");
-
-    private AbstractGraphicObject selectedObject = null;
     private Point lastMousePos = null;
-
-    String currentTool = "";
 
     public EditorFrame() {
         super("FIM Grafic Editor");
         initSampleData();
         //Add all buttons to buttons list
-        initButtons();
-        initToolbar();
+        toolBar.initToolbar();
         addMouseEventListener();
         addMouseMotionListener();
 
@@ -47,13 +38,9 @@ public class EditorFrame extends JFrame {
         canvas.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                makeDecision(e);
+                canvas.makeDecision(toolBar.getCurrentTool(), e);
                 lastMousePos = e.getPoint();
                 repaint();
-            }
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                selectedObject = null;
             }
         });
     }
@@ -61,86 +48,20 @@ public class EditorFrame extends JFrame {
         canvas.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                if(selectedObject != null){
+                if(canvas.getSelectedObject() != null){
                     int deltaX = e.getX() - lastMousePos.x;
                     int deltaY = e.getY() - lastMousePos.y;
 
+                    var selectedObject = canvas.getSelectedObject();
                     selectedObject.move(deltaX, deltaY);
+                    canvas.setSelectedObject(selectedObject);
                 }
                 lastMousePos = e.getPoint();
                 repaint();
             }
         });
     }
-    //Decides what to do when mouse is pressed
-    private void makeDecision(MouseEvent e){
-        if ("TRIANGLE".equals(currentTool)) {
-            EquilateralTriangle triangle = new EquilateralTriangle(e.getPoint(), 50, Color.black, true);
 
-            canvas.add(triangle);
-        }
-        else if("SQUARE".equals(currentTool)) {
-            Rectangle square = new Rectangle(e.getPoint(), Color.black, 50, 50);
-
-            canvas.add(square);
-        }
-        else if("RECTANGLE".equals(currentTool)) {
-            Rectangle rectangle = new Rectangle(e.getPoint(), Color.black, 100, 50);
-
-            canvas.add(rectangle);
-        }
-        else if("OVAL".equals(currentTool)) {
-            Oval oval = new Oval(e.getPoint(), Color.black, 50, 50);
-
-            canvas.add(oval);
-        }
-        else if("MOVE".equals(currentTool)) {
-            Point mousePos = e.getPoint();
-
-            var canvasObjects = canvas.getGraphicObjects();
-
-            for(AbstractGraphicObject object: canvasObjects){
-                if(object.contains(mousePos)){
-                    selectedObject = object;
-                }
-            }
-        }
-    }
-
-    private void initButtons(){
-        buttons.add(triangleBtn);
-        buttons.add(squareBtn);
-        buttons.add(rectBtn);
-        buttons.add(ovalBtn);
-        buttons.add(moveBtn);
-    }
-
-    private void initToolbar(){
-        buttons.forEach(button -> {
-            toolBar.add(button);
-            toolBar.addSeparator();
-        });
-
-        createEventListeners();
-    }
-
-    private void createEventListeners(){
-        triangleBtn.addActionListener(e -> {
-            currentTool = "TRIANGLE";
-        });
-        rectBtn.addActionListener(e -> {
-            currentTool = "RECTANGLE";
-        });
-        ovalBtn.addActionListener(e -> {
-            currentTool = "OVAL";
-        });
-        squareBtn.addActionListener(e -> {
-            currentTool = "SQUARE";
-        });
-        moveBtn.addActionListener(e -> {
-            currentTool = "MOVE";
-        });
-    }
 
     private void initSampleData() {
         Group group = new Group();
