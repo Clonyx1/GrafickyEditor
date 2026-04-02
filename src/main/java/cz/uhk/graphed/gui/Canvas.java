@@ -3,6 +3,7 @@ package cz.uhk.graphed.gui;
 import cz.uhk.graphed.enums.Tool;
 import cz.uhk.graphed.model.*;
 import cz.uhk.graphed.model.Rectangle;
+import cz.uhk.graphed.util.ImageExporter;
 
 import javax.swing.*;
 import javax.swing.plaf.ToolBarUI;
@@ -136,6 +137,12 @@ public class Canvas extends JPanel {
                     selectedObject = null;
                     repaint();
                 }
+                break;
+            case SAVE_IMG:
+                ImageExporter imgExporter = new ImageExporter();
+                imgExporter.saveCanvasAsPng(this);
+                JOptionPane.showMessageDialog(this, "Image saved successfully", "INFORMATION",  JOptionPane.INFORMATION_MESSAGE);
+                break;
         }
     }
 
@@ -151,7 +158,7 @@ public class Canvas extends JPanel {
 
     private void changeColor(){
         if(selectedObject != null){
-            Color newColor = JColorChooser.showDialog(null, "Vyber barvu", Color.black);
+            Color newColor = JColorChooser.showDialog(null, "Vyber barvu", Color.green);
 
             if(newColor != null){
                 selectedObject.setColor(newColor);

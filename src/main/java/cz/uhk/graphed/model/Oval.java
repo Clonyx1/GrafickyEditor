@@ -17,16 +17,12 @@ public class Oval extends AbstractGraphicObject{
         this.height = height;
     }
 
-    //Get set
-    public int getWidth() {return width;}
-    public void setWidth(int width) {this.width = width;}
-    public int getHeight() {return height;}
-    public void setHeight(int height) {this.height = height;}
 
     @Override
     public void draw(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 
+        g2.setColor(color);
         g2.drawOval(position.x, position.y, width, height);
     }
 

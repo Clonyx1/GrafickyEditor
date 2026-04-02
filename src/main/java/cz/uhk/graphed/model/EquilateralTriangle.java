@@ -15,12 +15,6 @@ public class EquilateralTriangle extends AbstractGraphicObject{
         this.isUpwards = isUpwards;
     }
 
-    //Get set
-    public Point getStartingPoint() {return position;}
-    public void setStartingPoint(Point pos) {this.position= pos;}
-    public int getEdgeLenght() {return edgeLenght;}
-    public void setEdgeLenght(int edgeLenght) {this.edgeLenght = edgeLenght;}
-
     @Override
     public void draw(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
@@ -43,6 +37,7 @@ public class EquilateralTriangle extends AbstractGraphicObject{
             xPoints[i] = vertices[i].x;
             yPoints[i] = vertices[i].y;
         }
+        g2.setColor(color);
         g2.drawPolygon(xPoints, yPoints, 3);
     }
 

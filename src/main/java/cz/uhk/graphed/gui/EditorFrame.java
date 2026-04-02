@@ -3,6 +3,7 @@ package cz.uhk.graphed.gui;
 import cz.uhk.graphed.enums.Tool;
 import cz.uhk.graphed.model.*;
 import cz.uhk.graphed.model.Rectangle;
+import cz.uhk.graphed.util.ImageExporter;
 
 import javax.swing.*;
 import java.awt.*;

@@ -18,28 +18,29 @@ public class ToolBar extends JToolBar {
     }
 
     public void initToolbar(){
-        add(createButton("Čtverec", Tool.SQUARE));
+        add(createButton("Square", Tool.SQUARE));
         addSeparator();
-        add(createButton("Obdelník", Tool.RECTANGLE));
+        add(createButton("Rectangle", Tool.RECTANGLE));
         addSeparator();
-        add(createButton("Trojúhelník", Tool.TRIANGLE));
+        add(createButton("Triangle", Tool.TRIANGLE));
         addSeparator();
-        add(createButton("Kruh", Tool.OVAL));
+        add(createButton("Oval", Tool.OVAL));
         addSeparator();
-        add(createButton("Náhodný čtverec", Tool.RANDOM_SQUARE));
+        add(createButton("Random square", Tool.RANDOM_SQUARE));
         addSeparator();
-        add(createButton("Náhodný obdelník", Tool.RANDOM_RECTANGLE));
+        add(createButton("Random rectangle", Tool.RANDOM_RECTANGLE));
         addSeparator();
-        add(createButton("Náhodný trojúhelník", Tool.RANDOM_TRIANGLE));
+        add(createButton("Random triangle", Tool.RANDOM_TRIANGLE));
         addSeparator();
-        add(createButton("Náhodný ovál", Tool.RANDOM_OVAL));
+        add(createButton("Random oval", Tool.RANDOM_OVAL));
         addSeparator();
-        add(createButton("Změnit barvu", Tool.CHANGE_COLOR));
+        add(createButton("Change color", Tool.CHANGE_COLOR));
         addSeparator();
-        add(createButton("Vybrat", Tool.CHOOSE));
+        add(createButton("Select", Tool.CHOOSE));
         addSeparator();
-        add(createButton("Vymazat", Tool.DELETE));
+        add(createButton("Delete", Tool.DELETE));
         addSeparator();
+        add(createButton("Save", Tool.SAVE_IMG));
     }
 
     private JButton createButton(String text, Tool tool){

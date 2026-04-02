@@ -11,5 +11,6 @@ public enum Tool {
     RANDOM_RECTANGLE,
     RANDOM_OVAL,
     CHANGE_COLOR,
-    DELETE
+    DELETE,
+    SAVE_IMG
 }
